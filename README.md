@@ -1,9 +1,9 @@
-# Intro
+## Intro
 This examples demonstrates the functional mode and the usage of TEST_TOKEN environment variable of paratest.
 
 [Paratest][1] is a PHP Package that enables PHPUnit tests to run in parallel thus reducing the overall execution time of the test suite.
 
-# Paratest Functional mode
+## Paratest Functional mode
 By default paratest opens up 5 processes, each of them running the tests of a single file (test class) of the Test Suite.
 
 Once a process is complete, it closes and another process can open to process another file.
@@ -18,7 +18,7 @@ In functional mode, the test suite breaks down in test methods instead of test c
 > To run paratest in functional mode add the `-f` option.
 ex: `vendor/bin/paratest -f <test-dir>`
 
-# Sharing common resources
+## Sharing common resources
 One issue that often comes up is parallel processing sharing the same resources.
 Some examples are:
 * Database  (on a mysql database, Deadlocks can happen when two concurrent processes, try to lock the same tables)
@@ -29,7 +29,7 @@ The above scenarios should not happen on unit tests where, ideally, no external 
 They might happen on integration tests and are very likely to happen on functional tests.
 
 
-# TEST_TOKEN environment variable
+## TEST_TOKEN environment variable
 TEST_TOKEN tries to deal with the common resources issue in a very simple way:
 > Clone the resources to ensure that no concurrent processes will access the same resource
 
@@ -37,7 +37,7 @@ It is accesible from the test suite itself `getenv('TEST_TOKEN')`. It uniquely i
 Since TEST_TOKEN is unique per running process, it can aid in the resource creation to avoid parallel processing accessing the same resource.
 When a paratest process stops, the TEST_TOKEN is released and a new process will get it.
 
-# FileTest example
+## FileTest example
 The example test class in `Tests\FileTest.php` consists of 20 slow tests that all write to a file, wait 200 milliseconds and then read from this file expecting to find what they wrote. What they write contain a random number `rand(1,1000)`
 
 The TEST_TOKEN environment variable is used as a suffix of the filename that each test will use
@@ -79,12 +79,12 @@ Failed asserting that two strings are equal.
 +'here is a random number 755'
 ```
 
-# TEST_TOKEN usage in databases
+## TEST_TOKEN usage in databases
 TEST_TOKEN can be used when having issues with tests running in parallel on a single database.
 The following steps are required:
 
 1. Create as many test databases as paratest processes (clones of the main test database) to ensure that each process will run against its own database
-A script demonstrating how to do that can be found at [tripsta/wink-clone-databases][1], tailored for Zend Framework 1.x applications
+A script demonstrating how to do that can be found at [tripsta/wink-clone-databases][2], tailored for Zend Framework 1.x applications
 2. In your application use `getenv('TEST_TOKEN')` to construct the database name that the process will connect to.
 
 An example for Zend Framework 1.x
