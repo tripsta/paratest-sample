@@ -7,7 +7,7 @@ class FileTest extends PHPUnit_Framework_TestCase
 	function setUp()
 	{
 		parent::setUp();
-		$this->_filename = sprintf('out.txt', getenv('TEST_TOKEN'));
+		$this->_filename = sprintf('out%s.txt', getenv('TEST_TOKEN'));
 	}
 
 	function test01()
